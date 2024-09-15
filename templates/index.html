@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Recommender System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Background Image and Gradient */
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://example.com/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #5ccfde;
+            margin-bottom: 30px;
+            transition: background-color 0.3s ease;
+        }
+        .navbar:hover {
+            background-color: #61d6e5;
+        }
+        .navbar-brand, .nav > li > a {
+            color: white !important;
+            transition: color 0.3s ease;
+        }
+        .navbar-brand:hover, .nav > li > a:hover {
+            color: #d1ecf1 !important;
+        }
+
+        /* Page Title Styling */
+        h1 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        /* Cards Styling */
+        .card {
+            background-color: #1c1c1c;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(67, 174, 174, 0.7);
+        }
+
+        .card-body {
+            padding: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .card-img-top {
+            opacity: 0.9;
+        }
+
+        /* Typography for Cards */
+        .card p, .card h4 {
+            transition: color 0.3s ease;
+        }
+
+        .card p:hover, .card h4:hover {
+            color: #9ce1e6;
+        }
+
+        /* Smooth Scroll Effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Transitions */
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        /* Row Reset for 4 Cards */
+        .row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        /* Make sure we have 4 cards per row */
+        .col-md-3 {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <p class="navbar-brand">My Book Recommender</p>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recommend">Recommend</a></li>
+            <li><a>Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Book Section -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Top 50 Books</h1>
+            </div>
+
+            {% for i in range(book_name|length) %}
+            <div class="col-md-3 col-sm-6 fadeIn">
+                <div class="card">
+                    <img class="card-img-top" src="{{ image[i] }}" alt="Book Image">
+                    <div class="card-body">
+                        <p>{{ book_name[i] }}</p>
+                        <h4>Author: {{ author[i] }}</h4>
+                        <h4>Ratings: {{ votes[i] }}</h4>
+                        <h4>Avg. Rating: {{ rating[i] }}</h4>
+                    </div>
+                </div>
+            </div>
+            {% if (i + 1) % 4 == 0 %}
+            </div><div class="row fadeIn">
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Add a fade-in effect as the page loads
+        document.addEventListener("DOMContentLoaded", function () {
+            let elements = document.querySelectorAll(".fadeIn");
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = 1;
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

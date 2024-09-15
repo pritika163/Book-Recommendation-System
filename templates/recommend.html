@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Recommender System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Background with gradient */
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://example.com/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: #5ccfde;
+            margin-bottom: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar:hover {
+            background-color: #61d6e5;
+        }
+
+        .navbar-brand, .nav > li > a {
+            color: white !important;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-brand:hover, .nav > li > a:hover {
+            color: #d1ecf1 !important;
+        }
+
+        /* Form section styling */
+        .form-inline {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .form-control {
+            width: 60%;
+            margin-right: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #9ce1e6;
+            box-shadow: 0 0 8px rgba(167, 226, 235, 0.5);
+        }
+
+        .btn-warning {
+            background-color: #d6cbdb;
+            border-color: #dbb5dd;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-warning:hover {
+            background-color: #e7cfe5;
+            transform: scale(1.05);
+        }
+
+        /* Book cards */
+        .card {
+            background-color: #1c1c1c;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(67, 174, 174, 0.7);
+        }
+
+        .card-body {
+            padding: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .card-img-top {
+            opacity: 0.9;
+        }
+
+        /* Row with 4 books per row */
+        .row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .col-md-3 {
+            margin-bottom: 30px;
+        }
+
+        /* Page Title */
+        h1 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        /* Fade-in effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Card and text hover */
+        .card p, .card h4 {
+            transition: color 0.3s ease;
+        }
+
+        .card p:hover, .card h4:hover {
+            color: #9ce1e6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <p class="navbar-brand">My Book Recommender</p>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recommend">Recommend</a></li>
+            <li><a>Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Form for Book Recommendation -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Recommend Books</h1>
+                <form action="/recommend_books" method="post" class="form-inline text-center">
+                    <input name="user_input" type="text" class="form-control input-lg" placeholder="Enter the book name">
+                    <input type="submit" class="btn btn-warning btn-lg" value="Find Books">
+                </form>
+            </div>
+        </div>
+
+        <!-- Book Cards -->
+        <div class="row">
+            {% if data %}
+                {% for i in data %}
+                <div class="col-md-3 col-sm-6 fadeIn">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ i[2] }}" alt="Book Image">
+                        <div class="card-body">
+                            <p>{{ i[0] }}</p>
+                            <h4>Author: {{ i[1] }}</h4>
+                        </div>
+                    </div>
+                </div>
+                {% if (loop.index % 4 == 0) %}
+                </div><div class="row fadeIn">
+                {% endif %}
+                {% endfor %}
+            {% else %}
+                <h2 class="text-white text-center" style="margin-top: 50px;">No Books Found</h2>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Add fade-in effect as the page loads
+        document.addEventListener("DOMContentLoaded", function () {
+            let elements = document.querySelectorAll(".fadeIn");
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = 1;
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
